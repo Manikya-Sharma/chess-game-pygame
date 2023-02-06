@@ -1,5 +1,6 @@
 import pygame
-from board import Board
+from level import Level
+
 
 class Game:
     def __init__(self):
@@ -15,13 +16,13 @@ class Game:
         # Game Variables
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.running = True
-        self.board = Board()
+        self.level = Level()
 
     def initialize_screen(self):
-        print("Initializing the screen") #!
+        print("Initializing the screen")  #!
 
     def end_game(self):
-        print("The game was ended") #!
+        print("The game was ended")  #!
         self.running = False
 
     def play(self):
@@ -30,11 +31,9 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.end_game()
-            #TESTS
-            self.board.draw(70, 5, 5)
-            for sq in self.board.get_all_squares_in_diagonal(4, 7):
-                sq.highlighted = True
+            self.level.play()
             pygame.display.update()
+
 
 if __name__ == "__main__":
     game = Game()
