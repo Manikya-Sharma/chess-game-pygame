@@ -43,7 +43,7 @@ class Square:
 
     def rgb_color(self):
         if self.hover and not (self.selected or self.highlighted):
-            return (200, 200, 200)
+            return (255, 204, 153)
         elif self.selected:
             return (200, 0, 0)
         elif self.highlighted:
@@ -51,7 +51,7 @@ class Square:
         if self.color == "white":
             return (255, 255, 255)
         elif self.color == "black":
-            return (0, 0, 0)
+            return (10, 10, 10)
 
 
 class Board:
