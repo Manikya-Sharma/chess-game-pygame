@@ -1,9 +1,11 @@
 import pygame
 
 class Images:
-    def __init__(self):
+    def __init__(self, size):
         self.d = {"black":{}, "white":{}}
+        self.size = size
         self.init_images()
+        self.prepare_images()
 
     def init_images(self):
         self.d["black"]["king"] = pygame.image.load("./chess/images/black/king.png")
@@ -25,3 +27,8 @@ class Images:
 
     def get_black_images(self):
         return self.d["black"]
+
+    def prepare_images(self):
+        for dic in self.d.values():
+            for key, img in dic.items():
+                dic[key] = pygame.transform.scale(img, (self.size, self.size))

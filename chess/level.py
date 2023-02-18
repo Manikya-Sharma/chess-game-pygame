@@ -14,7 +14,7 @@ class Level:
         self.board = Board()
         # misc
         self.timer = Timer()  # To add small delay
-        self.img = Images().get_images()
+        self.img = Images(self.size).get_images()
 
     def update(self):
         # Hover
@@ -28,6 +28,8 @@ class Level:
                 self.timer.reset()
                 pos = pygame.mouse.get_pos()
                 self.board.detect_click(pos[0], pos[1], self.size, 0, self.margin)
+        if pygame.mouse.get_pressed()[0]:
+            self.board.remove_all_selected()
 
     def play(self):
         # TESTS

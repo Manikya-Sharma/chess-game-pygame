@@ -51,7 +51,7 @@ class Square:
         if self.color == "white":
             return (255, 255, 255)
         elif self.color == "black":
-            return (10, 10, 10)
+            return (64, 64, 64)
 
 
 class Board:
@@ -125,6 +125,10 @@ class Board:
                     sq.selected = True
                 else:
                     sq.selected = False
+
+    def remove_all_selected(self):
+        for sq in self.board:
+            sq.selected = False
 
     @staticmethod
     def make_board():
