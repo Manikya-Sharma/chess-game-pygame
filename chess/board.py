@@ -189,32 +189,32 @@ class Board:
 
         # first person
         self.get_particular_square(7, 0).piece = piece.Rook(
-            self.color_minor, 7, 0, d[self.color_minor]["rook"], -1
+            self.color_major, 7, 0, d[self.color_major]["rook"], -1
         )
         self.get_particular_square(7, 1).piece = piece.Knight(
-            self.color_minor, 7, 1, d[self.color_minor]["knight"], -1
+            self.color_major, 7, 1, d[self.color_major]["knight"], -1
         )
         self.get_particular_square(7, 2).piece = piece.Bishop(
-            self.color_minor, 7, 2, d[self.color_minor]["bishop"], -1
+            self.color_major, 7, 2, d[self.color_major]["bishop"], -1
         )
         self.get_particular_square(7, 3).piece = piece.Queen(
-            self.color_minor, 7, 3, d[self.color_minor]["queen"], -1
+            self.color_major, 7, 3, d[self.color_major]["queen"], -1
         )
         self.get_particular_square(7, 4).piece = piece.King(
-            self.color_minor, 7, 4, d[self.color_minor]["king"], -1
+            self.color_major, 7, 4, d[self.color_major]["king"], -1
         )
         self.get_particular_square(7, 5).piece = piece.Bishop(
-            self.color_minor, 7, 5, d[self.color_minor]["bishop"], -1
+            self.color_major, 7, 5, d[self.color_major]["bishop"], -1
         )
         self.get_particular_square(7, 6).piece = piece.Knight(
-            self.color_minor, 7, 6, d[self.color_minor]["knight"], -1
+            self.color_major, 7, 6, d[self.color_major]["knight"], -1
         )
         self.get_particular_square(7, 7).piece = piece.Rook(
-            self.color_minor, 7, 7, d[self.color_minor]["rook"], -1
+            self.color_major, 7, 7, d[self.color_major]["rook"], -1
         )
         for i in range(8):
             self.get_particular_square(6, i).piece = piece.Pawn(
-                self.color_minor, 6, i, d[self.color_minor]["pawn"], -1
+                self.color_major, 6, i, d[self.color_major]["pawn"], -1
             )
 
     @staticmethod
