@@ -18,7 +18,8 @@ class Level:
         self.board = Board(self.img)  # TODO add which color player
 
         # misc
-        self.timer = Timer()  # To add small delay
+        self.timer1 = Timer()  # To add small delay
+        self.timer2 = Timer()
 
     def update(self):
         # Hover
@@ -27,13 +28,18 @@ class Level:
         # Selection
         if pygame.mouse.get_pressed()[2]:
             if (
-                self.timer.get_time() >= 200
+                self.timer1.get_time() >= 200
             ):  # prevents unwanted successive select/unselect
-                self.timer.reset()
+                self.timer1.reset()
                 pos = pygame.mouse.get_pos()
-                self.board.detect_click(pos[0], pos[1], self.size, 0, self.margin)
+                self.board.detect_right_click(pos[0], pos[1], self.size, 0, self.margin)
         if pygame.mouse.get_pressed()[0]:
-            self.board.remove_all_selected()
+            if self.timer2.get_time() >= 200:
+                self.board.remove_all_selected()
+                self.board.remove_all_highlighted()
+                self.timer2.reset()
+                pos = pygame.mouse.get_pos()
+                self.board.detect_left_click(pos[0], pos[1], self.size, 0, self.margin)
 
     def play(self):
         self.board.draw(self.size, 0, self.margin)

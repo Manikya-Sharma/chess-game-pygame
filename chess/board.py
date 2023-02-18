@@ -133,7 +133,7 @@ class Board:
             else:
                 sq.hover = False
 
-    def detect_click(self, pos_x, pos_y, size, p, m):
+    def detect_right_click(self, pos_x, pos_y, size, p, m):
         for sq in self.board:
             if sq.check_hover(pos_x, pos_y, size, p, m):
                 if not sq.selected:
@@ -141,69 +141,80 @@ class Board:
                 else:
                     sq.selected = False
 
+    def detect_left_click(self, pos_x, pos_y, size, p, m):
+        for sq in self.board:
+            if sq.check_hover(pos_x, pos_y, size, p, m):
+                if sq.has_piece():
+                    for n_sq in sq.piece.get_next_possible_moves(self):
+                        n_sq.highlighted = True
+
     def remove_all_selected(self):
         for sq in self.board:
             sq.selected = False
 
+    def remove_all_highlighted(self):
+        for sq in self.board:
+            sq.highlighted = False
+
     def prepare_pieces(self, d):
         # second person
         self.get_particular_square(0, 0).piece = piece.Rook(
-            self.color_minor, 0, 0, d[self.color_minor]["rook"], -1
+            self.color_minor, 0, 0, d[self.color_minor]["rook"], 1
         )
         self.get_particular_square(0, 1).piece = piece.Knight(
-            self.color_minor, 0, 1, d[self.color_minor]["knight"], -1
+            self.color_minor, 0, 1, d[self.color_minor]["knight"], 1
         )
         self.get_particular_square(0, 2).piece = piece.Bishop(
-            self.color_minor, 0, 2, d[self.color_minor]["bishop"], -1
+            self.color_minor, 0, 2, d[self.color_minor]["bishop"], 1
         )
         self.get_particular_square(0, 3).piece = piece.Queen(
-            self.color_minor, 0, 3, d[self.color_minor]["queen"], -1
+            self.color_minor, 0, 3, d[self.color_minor]["queen"], 1
         )
         self.get_particular_square(0, 4).piece = piece.King(
-            self.color_minor, 0, 4, d[self.color_minor]["king"], -1
+            self.color_minor, 0, 4, d[self.color_minor]["king"], 1
         )
         self.get_particular_square(0, 5).piece = piece.Bishop(
-            self.color_minor, 0, 5, d[self.color_minor]["bishop"], -1
+            self.color_minor, 0, 5, d[self.color_minor]["bishop"], 1
         )
         self.get_particular_square(0, 6).piece = piece.Knight(
-            self.color_minor, 0, 6, d[self.color_minor]["knight"], -1
+            self.color_minor, 0, 6, d[self.color_minor]["knight"], 1
         )
         self.get_particular_square(0, 7).piece = piece.Rook(
-            self.color_minor, 0, 7, d[self.color_minor]["rook"], -1
+            self.color_minor, 0, 7, d[self.color_minor]["rook"], 1
         )
         for i in range(8):
             self.get_particular_square(1, i).piece = piece.Pawn(
-                self.color_minor, 1, i, d[self.color_minor]["pawn"], -1
+                self.color_minor, 1, i, d[self.color_minor]["pawn"], 1
             )
 
         # first person
         self.get_particular_square(7, 0).piece = piece.Rook(
-            self.color_minor, 7, 0, d[self.color_minor]["rook"], 1
+            self.color_minor, 7, 0, d[self.color_minor]["rook"], -1
         )
         self.get_particular_square(7, 1).piece = piece.Knight(
-            self.color_minor, 7, 1, d[self.color_minor]["knight"], 1
+            self.color_minor, 7, 1, d[self.color_minor]["knight"], -1
         )
         self.get_particular_square(7, 2).piece = piece.Bishop(
-            self.color_minor, 7, 2, d[self.color_minor]["bishop"], 1
+            self.color_minor, 7, 2, d[self.color_minor]["bishop"], -1
         )
         self.get_particular_square(7, 3).piece = piece.Queen(
-            self.color_minor, 7, 3, d[self.color_minor]["queen"], 1
+            self.color_minor, 7, 3, d[self.color_minor]["queen"], -1
         )
         self.get_particular_square(7, 4).piece = piece.King(
-            self.color_minor, 7, 4, d[self.color_minor]["king"], 1
+            self.color_minor, 7, 4, d[self.color_minor]["king"], -1
         )
         self.get_particular_square(7, 5).piece = piece.Bishop(
-            self.color_minor, 7, 5, d[self.color_minor]["bishop"], 1
+            self.color_minor, 7, 5, d[self.color_minor]["bishop"], -1
         )
         self.get_particular_square(7, 6).piece = piece.Knight(
-            self.color_minor, 7, 6, d[self.color_minor]["knight"], 1
+            self.color_minor, 7, 6, d[self.color_minor]["knight"], -1
         )
         self.get_particular_square(7, 7).piece = piece.Rook(
-            self.color_minor, 7, 7, d[self.color_minor]["rook"], 1
+            self.color_minor, 7, 7, d[self.color_minor]["rook"], -1
         )
         for i in range(8):
             self.get_particular_square(6, i).piece = piece.Pawn(
-                self.color_minor, 6, i, d[self.color_minor]["pawn"], 1
+                self.color_minor, 6, i, d[self.color_minor]["pawn"], -1
             )
 
     @staticmethod
