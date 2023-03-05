@@ -144,7 +144,7 @@ class Board:
     def detect_left_click(self, pos_x, pos_y, size, p, m):
         for sq in self.board:
             if sq.check_hover(pos_x, pos_y, size, p, m):
-                if sq.has_piece():
+                if sq.has_piece() and not sq.highlighted:
                     for n_sq in sq.piece.get_next_possible_moves(self):
                         n_sq.highlighted = True
                         piece.ChessPiece.remove_all_pieces_want_to_move()
@@ -152,12 +152,14 @@ class Board:
                 elif sq.highlighted:
                     for _piece in piece.ChessPiece.pieces:
                         if _piece.wants_to_move:
-                            _piece.row, _piece.column = sq.row, sq.col
-                            sq.highlighted = False
+                            if sq.has_piece():
+                                piece.ChessPiece.pieces.remove(sq.piece)
                             self.get_particular_square(
                                 _piece.row, _piece.column
                             ).piece = None
+                            _piece.row, _piece.column = sq.row, sq.col
                             sq.piece = _piece
+                            self.remove_all_highlighted()
                             sq.piece.wants_to_move = False
 
     def is_click_on_highlighted(self, pos_x, pos_y, size, p, m):
