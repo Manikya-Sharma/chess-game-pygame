@@ -71,7 +71,7 @@ class Board:
         else:
             self.color_minor = "black"
         self.d = image_dict
-        self.pieces = self.prepare_pieces(self.d)
+        self.prepare_pieces(self.d)
 
     def highlight_square(self, row, col):
         for i in range(64):
@@ -147,6 +147,26 @@ class Board:
                 if sq.has_piece():
                     for n_sq in sq.piece.get_next_possible_moves(self):
                         n_sq.highlighted = True
+                        piece.ChessPiece.remove_all_pieces_want_to_move()
+                        sq.piece.wants_to_move = True
+                elif sq.highlighted:
+                    for _piece in piece.ChessPiece.pieces:
+                        if _piece.wants_to_move:
+                            _piece.row, _piece.column = sq.row, sq.col
+                            sq.highlighted = False
+                            self.get_particular_square(
+                                _piece.row, _piece.column
+                            ).piece = None
+                            sq.piece = _piece
+                            sq.piece.wants_to_move = False
+
+    def is_click_on_highlighted(self, pos_x, pos_y, size, p, m):
+        for sq in self.board:
+            if sq.check_hover(pos_x, pos_y, size, p, m):
+                if sq.highlighted:
+                    return True
+                else:
+                    return False
 
     def remove_all_selected(self):
         for sq in self.board:
@@ -155,6 +175,8 @@ class Board:
     def remove_all_highlighted(self):
         for sq in self.board:
             sq.highlighted = False
+            if sq.has_piece():
+                sq.piece.want_to_move = False
 
     def prepare_pieces(self, d):
         # second person

@@ -2,6 +2,8 @@ import pygame
 
 
 class ChessPiece:
+    pieces = []
+
     def __init__(self, color, row, column, image, face_direction=-1):
         # face_direction: -1 => first player
         # face_direction: +1 => second player
@@ -10,6 +12,8 @@ class ChessPiece:
         self.column = column
         self.img = image
         self.face_direction = face_direction
+        self.wants_to_move = False
+        ChessPiece.pieces.append(self)
 
     def draw(self, p, m):
         screen = pygame.display.get_surface()
@@ -21,6 +25,11 @@ class ChessPiece:
         return []
         # Every piece which inherits must implement this method its own way
 
+    @classmethod
+    def remove_all_pieces_want_to_move(cls):
+        for pc in cls.pieces:
+            pc.wants_to_move = False
+
 
 class Pawn(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
@@ -29,15 +38,16 @@ class Pawn(ChessPiece):
     def get_next_possible_moves(self, board):
         possible_moves = []
         for sq in board.get_all_squares_in_diagonal(self.row, self.column):
-            if self.face_direction == 1:
+            if self.face_direction == -1:
                 if self.row < sq.row:
                     continue
-            elif self.face_direction == -1:
+            elif self.face_direction == 1:
                 if self.row > sq.row:
                     continue
-            if sq.has_piece():
-                if sq.piece.color != self.color:
-                    possible_moves.append(sq)
+            if abs(sq.row - self.row) == 1 and abs(sq.col - self.column) == 1:
+                if sq.has_piece():
+                    if sq.piece.color != self.color:
+                        possible_moves.append(sq)
         try:
             front_piece = board.get_particular_square(
                 self.row + self.face_direction, self.column

@@ -36,7 +36,11 @@ class Level:
         if pygame.mouse.get_pressed()[0]:
             if self.timer2.get_time() >= 200:
                 self.board.remove_all_selected()
-                self.board.remove_all_highlighted()
+                if not self.board.is_click_on_highlighted(
+                    pos[0], pos[1], self.size, 0, self.margin
+                ):
+                    self.board.remove_all_highlighted()
+                    # because if player wants to make a move, highlight must not be removed
                 self.timer2.reset()
                 pos = pygame.mouse.get_pos()
                 self.board.detect_left_click(pos[0], pos[1], self.size, 0, self.margin)
