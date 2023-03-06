@@ -18,7 +18,7 @@ class Square:
     def __init__(self, color, row, col, piece=None):
         self.color = color
         self.row = row
-        self.col = col
+        self.column = col
         self.highlighted = False
         self.hover = False
         self.selected = False
@@ -29,15 +29,15 @@ class Square:
         pygame.draw.rect(
             screen,
             self.rgb_color(),
-            [m + self.col * (size + p), m + self.row * (size + p), size, size],
+            [m + self.column * (size + p), m + self.row * (size + p), size, size],
         )
         if self.has_piece():
             self.piece.draw(p, m)
 
     def check_hover(self, pos_x, pos_y, size, p, m):
         if (
-            pos_x >= m + self.col * (size + p)
-            and pos_x <= m + self.col * (size + p) + size
+            pos_x >= m + self.column * (size + p)
+            and pos_x <= m + self.column * (size + p) + size
         ):
             if (
                 pos_y >= m + self.row * (size + p)
@@ -76,7 +76,7 @@ class Board:
     def highlight_square(self, row, col):
         for i in range(64):
             sq = self.board[i]
-            if (sq.row, sq.col) == (row, col):
+            if (sq.row, sq.column) == (row, col):
                 sq.highlighted = True
 
     def get_all_squares_in_row(self, row):
@@ -89,7 +89,7 @@ class Board:
     def get_all_squares_in_column(self, column):
         reqd_squares = []
         for i in range(64):
-            if self.board[i].col == column:
+            if self.board[i].column == column:
                 reqd_squares.append(self.board[i])
         return reqd_squares
 
@@ -102,7 +102,7 @@ class Board:
             reqd_col = first_col + l
             for x in range(64):
                 sq = self.board[x]
-                if sq.row == reqd_row and sq.col == reqd_col:
+                if sq.row == reqd_row and sq.column == reqd_col:
                     redq_squares.append(sq)
         j = min(row, col)
         first_row, first_col = row + j, col - j  # Get the top left diagonal piece
@@ -111,7 +111,7 @@ class Board:
             reqd_col = first_col + k
             for y in range(64):
                 sq = self.board[y]
-                if sq.row == reqd_row and sq.col == reqd_col:
+                if sq.row == reqd_row and sq.column == reqd_col:
                     redq_squares.append(sq)
         return redq_squares
 
@@ -145,6 +145,12 @@ class Board:
         for sq in self.board:
             if sq.check_hover(pos_x, pos_y, size, p, m):
                 if sq.has_piece() and not sq.highlighted:
+                    if sq.piece.wants_to_move:
+                        self.remove_all_highlighted()
+                        piece.ChessPiece.remove_all_pieces_want_to_move()
+                        continue  # click again on the piece to remove highlight.
+                        # ! note continue here, might cause errors if
+                        # ! more statements added to the loop.
                     for n_sq in sq.piece.get_next_possible_moves(self):
                         n_sq.highlighted = True
                         piece.ChessPiece.remove_all_pieces_want_to_move()
@@ -157,7 +163,7 @@ class Board:
                             self.get_particular_square(
                                 _piece.row, _piece.column
                             ).piece = None
-                            _piece.row, _piece.column = sq.row, sq.col
+                            _piece.row, _piece.column = sq.row, sq.column
                             sq.piece = _piece
                             self.remove_all_highlighted()
                             sq.piece.wants_to_move = False

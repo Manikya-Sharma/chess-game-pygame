@@ -44,7 +44,7 @@ class Pawn(ChessPiece):
             elif self.face_direction == 1:
                 if self.row > sq.row:
                     continue
-            if abs(sq.row - self.row) == 1 and abs(sq.col - self.column) == 1:
+            if abs(sq.row - self.row) == 1 and abs(sq.column - self.column) == 1:
                 if sq.has_piece():
                     if sq.piece.color != self.color:
                         possible_moves.append(sq)
@@ -62,6 +62,40 @@ class Pawn(ChessPiece):
 class Rook(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
         super().__init__(color, row, column, image, face_direction)
+
+    def get_next_possible_moves(self, board):
+        possible_moves_row = []
+        possible_moves_column = []
+        for row_sq in board.get_all_squares_in_row(self.row):
+            if row_sq.has_piece() and row_sq.piece == self:
+                continue
+            if row_sq.has_piece():
+                if row_sq.column < self.column:
+                    possible_moves_row.clear()  # remove all squares to left
+                    if row_sq.piece.color != self.color:
+                        possible_moves_row.append(row_sq)
+                elif row_sq.column > self.column:
+                    if row_sq.piece.color != self.color:
+                        possible_moves_row.append(row_sq)
+                    break
+                continue
+            possible_moves_row.append(row_sq)
+        for column_sq in board.get_all_squares_in_column(self.column):
+            if column_sq.has_piece() and column_sq.piece == self:
+                continue
+            if column_sq.has_piece():
+                if column_sq.row < self.row:
+                    possible_moves_column.clear()  # remove all squares to top
+                    if column_sq.piece.color != self.color:
+                        possible_moves_column.append(column_sq)
+                elif column_sq.row > self.row:
+                    if column_sq.piece.color != self.color:
+                        possible_moves_column.append(column_sq)
+                    break
+                continue
+            possible_moves_column.append(column_sq)
+        possible_moves_row.extend(possible_moves_column)
+        return possible_moves_row
 
 
 class Knight(ChessPiece):
