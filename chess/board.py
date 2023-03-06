@@ -31,6 +31,14 @@ class Square:
             self.rgb_color(),
             [m + self.column * (size + p), m + self.row * (size + p), size, size],
         )
+        # adding borders for more visual clarity
+        if self.highlighted or self.selected:
+            pygame.draw.rect(
+                screen,
+                tuple(map(lambda x: abs(x - 50), self.rgb_color())),
+                [m + self.column * (size + p), m + self.row * (size + p), size, size],
+                1,
+            )
         if self.has_piece():
             self.piece.draw(p, m)
 

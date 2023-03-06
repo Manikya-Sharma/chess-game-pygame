@@ -9,7 +9,7 @@ class Level:
         self.screen = pygame.display.get_surface()
 
         # size of squares:-
-        self.margin = 10
+        self.margin = 8  # margin divisible by 8 will ensure continuous board
         self.size = (
             self.screen.get_width() - 2 * self.margin
         ) / 8  # Assuming square screen
