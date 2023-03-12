@@ -123,7 +123,7 @@ class Board:
                     redq_squares.append(sq)
         return redq_squares
 
-    def get_horse_squares(self, row, col):
+    def get_knight_squares(self, row, col):
         pass  # TODO
 
     def get_particular_square(self, row, col):

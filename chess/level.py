@@ -28,13 +28,13 @@ class Level:
         # Selection
         if pygame.mouse.get_pressed()[2]:
             if (
-                self.timer1.get_time() >= 200
+                self.timer1.get_time() >= 500
             ):  # prevents unwanted successive select/unselect
                 self.timer1.reset()
                 pos = pygame.mouse.get_pos()
                 self.board.detect_right_click(pos[0], pos[1], self.size, 0, self.margin)
         if pygame.mouse.get_pressed()[0]:
-            if self.timer2.get_time() >= 200:
+            if self.timer2.get_time() >= 500:
                 self.board.remove_all_selected()
                 if not self.board.is_click_on_highlighted(
                     pos[0], pos[1], self.size, 0, self.margin

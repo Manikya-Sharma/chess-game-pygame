@@ -107,6 +107,48 @@ class Bishop(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
         super().__init__(color, row, column, image, face_direction)
 
+    def get_next_possible_moves(self, board):
+        possible_moves_d1 = []
+        possible_moves_d2 = []
+        stop_d1 = False
+        stop_d2 = False
+        for cell in board.get_all_squares_in_diagonal(self.row, self.column):
+            # top left to bottom right and bottom left to top right
+            if cell.has_piece() and cell.piece == self:
+                continue
+            # diagonal-1
+            if cell.row < self.row and cell.column < self.column:
+                if cell.has_piece():
+                    possible_moves_d1.clear()
+                    if cell.piece.color == self.color:
+                        continue
+                possible_moves_d1.append(cell)
+            elif cell.row > self.row and cell.column > self.column:
+                if stop_d1:
+                    continue
+                if cell.has_piece():
+                    stop_d1 = True
+                    if cell.piece.color == self.color:
+                        continue
+                possible_moves_d1.append(cell)
+            # diagonal-2
+            elif cell.row > self.row and cell.column < self.column:
+                if cell.has_piece():
+                    possible_moves_d2.clear()
+                    if cell.piece.color == self.color:
+                        continue
+                possible_moves_d2.append(cell)
+            elif cell.row < self.row and cell.column > self.column:
+                if stop_d2:
+                    continue
+                if cell.has_piece():
+                    stop_d2 = True
+                    if cell.piece.color == self.color:
+                        continue
+                possible_moves_d2.append(cell)
+            possible_moves_d1.extend(possible_moves_d2)
+        return possible_moves_d1
+
 
 class Queen(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):

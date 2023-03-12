@@ -9,6 +9,7 @@ class Images:
         self.prepare_images()
 
     def init_images(self):
+        # TODO: change the main directory to ./chess
         self.d["black"]["king"] = pygame.image.load("./chess/images/black/king.png")
         self.d["black"]["queen"] = pygame.image.load("./chess/images/black/queen.png")
         self.d["black"]["bishop"] = pygame.image.load("./chess/images/black/bishop.png")
