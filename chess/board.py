@@ -102,26 +102,37 @@ class Board:
         return reqd_squares
 
     def get_all_squares_in_diagonal(self, row, col):
-        i = min(row, col)
-        first_row, first_col = row - i, col - i  # Get the top left diagonal piece
-        redq_squares = []
-        for l in range(min(8 - first_row, 8 - first_col)):
-            reqd_row = first_row + l
-            reqd_col = first_col + l
-            for x in range(64):
-                sq = self.board[x]
-                if sq.row == reqd_row and sq.column == reqd_col:
-                    redq_squares.append(sq)
-        j = min(row, col)
-        first_row, first_col = row + j, col - j  # Get the top left diagonal piece
-        for k in range(max(8 - first_row, 8 - first_col)):
-            reqd_row = first_row - k
-            reqd_col = first_col + k
-            for y in range(64):
-                sq = self.board[y]
-                if sq.row == reqd_row and sq.column == reqd_col:
-                    redq_squares.append(sq)
-        return redq_squares
+        # top left to bottom right then bottom left to top right
+        reqd_squares = []
+        # diagonal-1
+        input_data_d1 = [row, col]
+        min_d1 = min(input_data_d1)
+        input_data_d1[0] = input_data_d1[0] - min_d1
+        input_data_d1[1] = input_data_d1[1] - min_d1
+        # now input_data_d1 has top left square
+        while max(input_data_d1) < 8:
+            reqd_squares.append(
+                self.get_particular_square(input_data_d1[0], input_data_d1[1])
+            )
+            input_data_d1[0] += 1
+            input_data_d1[1] += 1
+
+        # # diagonal-2
+        row = 7 - row
+        # consider transformation of rotating the board 180 degree
+        # now we need to follow same procedure
+        input_data_d2 = [row, col]
+        min_d2 = min(input_data_d2)
+        input_data_d2[0] = input_data_d2[0] - min_d2
+        input_data_d2[1] = input_data_d2[1] - min_d2
+        # now input_data_d2 has top left square (for rotated board)
+        while max(input_data_d2) < 8:
+            reqd_squares.append(
+                self.get_particular_square(7 - input_data_d2[0], input_data_d2[1])
+            )
+            input_data_d2[0] += 1
+            input_data_d2[1] += 1
+        return reqd_squares
 
     def get_knight_squares(self, row, col):
         pass  # TODO

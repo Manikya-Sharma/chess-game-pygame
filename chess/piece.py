@@ -146,7 +146,7 @@ class Bishop(ChessPiece):
                     if cell.piece.color == self.color:
                         continue
                 possible_moves_d2.append(cell)
-            possible_moves_d1.extend(possible_moves_d2)
+        possible_moves_d1.extend(possible_moves_d2)
         return possible_moves_d1
 
 
