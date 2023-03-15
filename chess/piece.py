@@ -289,3 +289,39 @@ class Queen(ChessPiece):
 class King(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
         super().__init__(color, row, column, image, face_direction)
+
+    def get_next_possible_moves(self, board):
+        all_moves = []
+        if self.row > 0:
+            if self.column > 0:
+                all_moves.append(
+                    board.get_particular_square(self.row - 1, self.column - 1)
+                )
+            all_moves.append(board.get_particular_square(self.row - 1, self.column))
+            if self.column < 7:
+                all_moves.append(
+                    board.get_particular_square(self.row - 1, self.column + 1)
+                )
+        if self.column > 0:
+            all_moves.append(board.get_particular_square(self.row, self.column - 1))
+        if self.column < 7:
+            all_moves.append(board.get_particular_square(self.row, self.column + 1))
+        if self.row < 7:
+            if self.column > 0:
+                all_moves.append(
+                    board.get_particular_square(self.row + 1, self.column - 1)
+                )
+            all_moves.append(board.get_particular_square(self.row + 1, self.column))
+            if self.column < 7:
+                all_moves.append(
+                    board.get_particular_square(self.row + 1, self.column + 1)
+                )
+        possible_moves = []
+        for sq in all_moves:
+            if sq.has_piece():
+                if sq.piece.color == self.color:
+                    continue
+                else:
+                    sq.piece.under_attack = True
+            possible_moves.append(sq)
+        return possible_moves
