@@ -119,6 +119,41 @@ class Knight(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
         super().__init__(color, row, column, image, face_direction)
 
+    def get_next_possible_moves(self, board):
+        all_moves = []
+        r = self.row
+        c = self.column
+        if r > 0:
+            if c > 1:
+                all_moves.append(board.get_particular_square(r - 1, c - 2))
+            if c < 6:
+                all_moves.append(board.get_particular_square(r - 1, c + 2))
+        if r > 1:
+            if c > 0:
+                all_moves.append(board.get_particular_square(r - 2, c - 1))
+            if c < 7:
+                all_moves.append(board.get_particular_square(r - 2, c + 1))
+        if r < 7:
+            if c > 1:
+                all_moves.append(board.get_particular_square(r + 1, c - 2))
+            if c < 6:
+                all_moves.append(board.get_particular_square(r + 1, c + 2))
+        if r < 6:
+            if c > 0:
+                all_moves.append(board.get_particular_square(r + 2, c - 1))
+            if c < 7:
+                all_moves.append(board.get_particular_square(r + 2, c + 1))
+
+        possible_moves = []
+        for sq in all_moves:
+            if sq.has_piece():
+                if sq.piece.color == self.color:
+                    continue
+                else:
+                    sq.piece.under_attack = True
+            possible_moves.append(sq)
+        return possible_moves
+
 
 class Bishop(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
