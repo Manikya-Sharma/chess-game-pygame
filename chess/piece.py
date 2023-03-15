@@ -219,7 +219,7 @@ class Bishop(ChessPiece):
                     if cell.piece.color == self.color:
                         continue
                     else:
-                        sq.piece.under_attack = True
+                        cell.piece.under_attack = True
                 possible_moves_d2.append(cell)
         possible_moves_d1.extend(possible_moves_d2)
         return possible_moves_d1
@@ -280,7 +280,7 @@ class Queen(ChessPiece):
                     if cell.piece.color == self.color:
                         continue
                     else:
-                        sq.piece.under_attack = True
+                        cell.piece.under_attack = True
                 possible_moves_d2.append(cell)
         possible_moves_d1.extend(possible_moves_d2)
 

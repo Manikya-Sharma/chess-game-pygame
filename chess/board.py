@@ -76,8 +76,11 @@ class Board:
         self.color_major = first_person_color
         if self.color_major == "black":
             self.color_minor = "white"
+            self.face_direction = 1
         else:
             self.color_minor = "black"
+            self.face_direction = -1
+        # self.face_direction is used to tell whose move
         self.d = image_dict
         self.prepare_pieces(self.d)
 
@@ -134,9 +137,6 @@ class Board:
             input_data_d2[1] += 1
         return reqd_squares
 
-    def get_knight_squares(self, row, col):
-        pass  # TODO
-
     def get_particular_square(self, row, col):
         return self.board[row * 8 + col]  # Faster access
 
@@ -164,6 +164,8 @@ class Board:
         for sq in self.board:
             if sq.check_hover(pos_x, pos_y, size, p, m):
                 if sq.has_piece() and not sq.highlighted:
+                    if sq.piece.face_direction != self.face_direction:
+                        continue
                     if sq.piece.wants_to_move:
                         self.remove_all_highlighted()
                         piece.ChessPiece.remove_all_pieces_want_to_move()
@@ -186,6 +188,7 @@ class Board:
                             sq.piece = _piece
                             self.remove_all_highlighted()
                             sq.piece.wants_to_move = False
+                            self.face_direction *= -1
 
     def is_click_on_highlighted(self, pos_x, pos_y, size, p, m):
         for sq in self.board:
