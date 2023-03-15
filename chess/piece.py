@@ -63,6 +63,15 @@ class Pawn(ChessPiece):
             return possible_moves
         if not front_piece.has_piece():
             possible_moves.append(front_piece)
+            # initial position allows two steps
+            if (self.face_direction == -1 and self.row == 6) or (
+                self.face_direction == 1 and self.row == 1
+            ):
+                next_piece = board.get_particular_square(
+                    self.row + self.face_direction * 2, self.column
+                )
+                if not next_piece.has_piece():
+                    possible_moves.append(next_piece)
         return possible_moves
 
 
