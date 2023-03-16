@@ -54,6 +54,8 @@ class Square:
                 return True
 
     def rgb_color(self):
+        if self.has_piece() and self.piece.under_attack:
+            return (255, 50, 50)
         if self.hover and not (self.selected or self.highlighted):
             return (255, 204, 153)
         elif self.selected:
@@ -71,7 +73,7 @@ class Square:
 
 class Board:
     # Board is nothing but a 2d array with extra methods
-    def __init__(self, image_dict, first_person_color="white"):
+    def __init__(self, image_dict, first_person_color="black"):
         self.board = Board.make_board()
         self.color_major = first_person_color
         if self.color_major == "black":
@@ -151,6 +153,13 @@ class Board:
                 sq.hover = True
             else:
                 sq.hover = False
+            if sq.has_piece():
+                if len(sq.piece.attacking) == 0:
+                    sq.piece.is_attacking = False
+                if sq.piece.face_direction == self.face_direction:
+                    for possible_move in sq.piece.get_next_possible_moves(self):
+                        if possible_move.has_piece():  # under attack
+                            possible_move.piece.set_under_attack(sq.piece)
 
     def detect_right_click(self, pos_x, pos_y, size, p, m):
         for sq in self.board:
@@ -189,6 +198,7 @@ class Board:
                             self.remove_all_highlighted()
                             sq.piece.wants_to_move = False
                             self.face_direction *= -1
+                            piece.ChessPiece.remove_all_under_attack()
 
     def is_click_on_highlighted(self, pos_x, pos_y, size, p, m):
         for sq in self.board:

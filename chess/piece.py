@@ -11,9 +11,16 @@ class ChessPiece:
         self.row = row
         self.column = column
         self.img = image
+
         self.face_direction = face_direction
         self.wants_to_move = False
+
         self.under_attack = False
+        self.attacked_by = []
+
+        self.is_attacking = False
+        self.attacking = []
+
         ChessPiece.pieces.append(self)
 
     def draw(self, p, m):
@@ -21,8 +28,18 @@ class ChessPiece:
         size = self.img.get_width()
         screen.blit(self.img, (m + self.column * (size + p), m + self.row * (size + p)))
 
+    def set_under_attack(self, attacking_piece):
+        self.under_attack = True
+        self.attacked_by.append(attacking_piece)
+        attacking_piece.is_attacking = True
+        attacking_piece.attacking.append(self)
+
+    def remove_under_attack(self, attacking_piece):
+        self.under_attack = False
+        self.attacked_by.remove(attacking_piece)
+        attacking_piece.attacking.remove(self)
+
     def get_next_possible_moves(self, board):
-        print("There seems to be an error")
         return []
         # Every piece which inherits must implement this method its own way
 
@@ -35,6 +52,7 @@ class ChessPiece:
     def remove_all_under_attack(cls):
         for pc in cls.pieces:
             pc.under_attack = False
+            pc.attacked_by.clear()
 
 
 class Pawn(ChessPiece):
@@ -54,7 +72,7 @@ class Pawn(ChessPiece):
                 if sq.has_piece():
                     if sq.piece.color != self.color:
                         possible_moves.append(sq)
-                        sq.piece.under_attack = True
+
         try:
             front_piece = board.get_particular_square(
                 self.row + self.face_direction, self.column
@@ -88,16 +106,13 @@ class Rook(ChessPiece):
             if row_sq.has_piece():
                 if row_sq.column < self.column:
                     possible_moves_row.clear()  # remove all squares to left
-                    for sq in possible_moves_row:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if row_sq.piece.color != self.color:
                         possible_moves_row.append(row_sq)
-                        row_sq.piece.under_attack = True
+
                 elif row_sq.column > self.column:
                     if row_sq.piece.color != self.color:
                         possible_moves_row.append(row_sq)
-                        row_sq.piece.under_attack = True
+
                     break
                 continue
             possible_moves_row.append(row_sq)
@@ -107,16 +122,11 @@ class Rook(ChessPiece):
             if column_sq.has_piece():
                 if column_sq.row < self.row:
                     possible_moves_column.clear()  # remove all squares to top
-                    for sq in possible_moves_column:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if column_sq.piece.color != self.color:
                         possible_moves_column.append(column_sq)
-                        column_sq.piece.under_attack = True
                 elif column_sq.row > self.row:
                     if column_sq.piece.color != self.color:
                         possible_moves_column.append(column_sq)
-                        column_sq.piece.under_attack = True
                     break
                 continue
             possible_moves_column.append(column_sq)
@@ -158,8 +168,6 @@ class Knight(ChessPiece):
             if sq.has_piece():
                 if sq.piece.color == self.color:
                     continue
-                else:
-                    sq.piece.under_attack = True
             possible_moves.append(sq)
         return possible_moves
 
@@ -181,13 +189,8 @@ class Bishop(ChessPiece):
             if cell.row < self.row and cell.column < self.column:
                 if cell.has_piece():
                     possible_moves_d1.clear()
-                    for sq in possible_moves_d1:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d1.append(cell)
             elif cell.row > self.row and cell.column > self.column:
                 if stop_d1:
@@ -196,20 +199,13 @@ class Bishop(ChessPiece):
                     stop_d1 = True
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d1.append(cell)
             # diagonal-2
             elif cell.row > self.row and cell.column < self.column:
                 if cell.has_piece():
                     possible_moves_d2.clear()
-                    for sq in possible_moves_d2:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d2.append(cell)
             elif cell.row < self.row and cell.column > self.column:
                 if stop_d2:
@@ -218,8 +214,6 @@ class Bishop(ChessPiece):
                     stop_d2 = True
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d2.append(cell)
         possible_moves_d1.extend(possible_moves_d2)
         return possible_moves_d1
@@ -242,13 +236,8 @@ class Queen(ChessPiece):
             if cell.row < self.row and cell.column < self.column:
                 if cell.has_piece():
                     possible_moves_d1.clear()
-                    for sq in possible_moves_d1:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d1.append(cell)
             elif cell.row > self.row and cell.column > self.column:
                 if stop_d1:
@@ -257,20 +246,13 @@ class Queen(ChessPiece):
                     stop_d1 = True
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d1.append(cell)
             # diagonal-2
             elif cell.row > self.row and cell.column < self.column:
                 if cell.has_piece():
                     possible_moves_d2.clear()
-                    for sq in possible_moves_d2:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d2.append(cell)
             elif cell.row < self.row and cell.column > self.column:
                 if stop_d2:
@@ -279,8 +261,6 @@ class Queen(ChessPiece):
                     stop_d2 = True
                     if cell.piece.color == self.color:
                         continue
-                    else:
-                        cell.piece.under_attack = True
                 possible_moves_d2.append(cell)
         possible_moves_d1.extend(possible_moves_d2)
 
@@ -292,16 +272,13 @@ class Queen(ChessPiece):
             if row_sq.has_piece():
                 if row_sq.column < self.column:
                     possible_moves_row.clear()  # remove all squares to left
-                    for sq in possible_moves_row:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if row_sq.piece.color != self.color:
                         possible_moves_row.append(row_sq)
-                        row_sq.piece.under_attack = True
+
                 elif row_sq.column > self.column:
                     if row_sq.piece.color != self.color:
                         possible_moves_row.append(row_sq)
-                        row_sq.piece.under_attack = True
+
                     break
                 continue
             possible_moves_row.append(row_sq)
@@ -311,16 +288,11 @@ class Queen(ChessPiece):
             if column_sq.has_piece():
                 if column_sq.row < self.row:
                     possible_moves_column.clear()  # remove all squares to top
-                    for sq in possible_moves_column:
-                        if sq.has_piece() and sq.piece.under_attack:
-                            sq.piece.under_attack = False
                     if column_sq.piece.color != self.color:
                         possible_moves_column.append(column_sq)
-                        column_sq.piece.under_attack = True
                 elif column_sq.row > self.row:
                     if column_sq.piece.color != self.color:
                         possible_moves_column.append(column_sq)
-                        column_sq.piece.under_attack = True
                     break
                 continue
             possible_moves_column.append(column_sq)
@@ -365,7 +337,5 @@ class King(ChessPiece):
             if sq.has_piece():
                 if sq.piece.color == self.color:
                     continue
-                else:
-                    sq.piece.under_attack = True
             possible_moves.append(sq)
         return possible_moves
