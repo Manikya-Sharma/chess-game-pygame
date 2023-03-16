@@ -36,4 +36,5 @@ class Images:
     def prepare_images(self):
         for dic in self.d.values():
             for key, img in dic.items():
+                img.set_colorkey((255, 0, 255))
                 dic[key] = pygame.transform.scale(img, (self.size, self.size))

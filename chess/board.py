@@ -73,7 +73,7 @@ class Square:
 
 class Board:
     # Board is nothing but a 2d array with extra methods
-    def __init__(self, image_dict, first_person_color="black"):
+    def __init__(self, image_dict, first_person_color="white"):
         self.board = Board.make_board()
         self.color_major = first_person_color
         if self.color_major == "black":
