@@ -41,6 +41,30 @@ class Square:
             )
         if self.has_piece():
             self.piece.draw(p, m)
+            if self.piece.under_attack:
+                pygame.draw.rect(
+                    screen,
+                    (255, 50, 50),
+                    [
+                        m + self.column * (size + p),
+                        m + self.row * (size + p),
+                        size,
+                        size,
+                    ],
+                    2,
+                )
+            if self.piece.is_attacking:
+                pygame.draw.rect(
+                    screen,
+                    (50, 255, 50),
+                    [
+                        m + self.column * (size + p),
+                        m + self.row * (size + p),
+                        size,
+                        size,
+                    ],
+                    2,
+                )
 
     def check_hover(self, pos_x, pos_y, size, p, m):
         if (
@@ -54,8 +78,6 @@ class Square:
                 return True
 
     def rgb_color(self):
-        if self.has_piece() and self.piece.under_attack:
-            return (255, 50, 50)
         if self.hover and not (self.selected or self.highlighted):
             return (255, 204, 153)
         elif self.selected:
@@ -199,6 +221,7 @@ class Board:
                             sq.piece.wants_to_move = False
                             self.face_direction *= -1
                             piece.ChessPiece.remove_all_under_attack()
+                            piece.ChessPiece.remove_all_attacking()
 
     def is_click_on_highlighted(self, pos_x, pos_y, size, p, m):
         for sq in self.board:

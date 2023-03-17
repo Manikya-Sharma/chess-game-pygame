@@ -54,6 +54,11 @@ class ChessPiece:
             pc.under_attack = False
             pc.attacked_by.clear()
 
+    @classmethod
+    def remove_all_attacking(cls):
+        for pc in cls.pieces:
+            pc.is_attacking = False
+            pc.attacking.clear()
 
 class Pawn(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
