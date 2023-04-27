@@ -68,26 +68,24 @@ class Square:
 
     def check_hover(self, pos_x, pos_y, size, p, m):
         if (
-            pos_x >= m + self.column * (size + p)
-            and pos_x <= m + self.column * (size + p) + size
+                m + self.column * (size + p) <= pos_x <= m + self.column * (size + p) + size
         ):
             if (
-                pos_y >= m + self.row * (size + p)
-                and pos_y <= m + self.row * (size + p) + size
+                    m + self.row * (size + p) <= pos_y <= m + self.row * (size + p) + size
             ):
                 return True
 
     def rgb_color(self):
         if self.hover and not (self.selected or self.highlighted):
-            return (255, 204, 153)
+            return 255, 204, 153
         elif self.selected:
-            return (200, 0, 0)
+            return 200, 0, 0
         elif self.highlighted:
-            return (0, 255, 255)
+            return 0, 255, 255
         if self.color == "white":
-            return (255, 255, 255)
+            return 255, 255, 255
         elif self.color == "black":
-            return (64, 64, 64)
+            return 64, 64, 64
 
     def has_piece(self):
         return bool(self.piece)

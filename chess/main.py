@@ -19,10 +19,10 @@ class Game:
         self.level = Level()
 
     def initialize_screen(self):
-        print("Initializing the screen")  #!
+        print("Initializing the screen")  # !
 
     def end_game(self):
-        print("The game was ended")  #!
+        print("The game was ended")  # !
         self.running = False
 
     def play(self):

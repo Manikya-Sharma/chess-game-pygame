@@ -60,6 +60,7 @@ class ChessPiece:
             pc.is_attacking = False
             pc.attacking.clear()
 
+
 class Pawn(ChessPiece):
     def __init__(self, color, row, column, image, face_direction=+1):
         super().__init__(color, row, column, image, face_direction)
@@ -88,7 +89,7 @@ class Pawn(ChessPiece):
             possible_moves.append(front_piece)
             # initial position allows two steps
             if (self.face_direction == -1 and self.row == 6) or (
-                self.face_direction == 1 and self.row == 1
+                    self.face_direction == 1 and self.row == 1
             ):
                 next_piece = board.get_particular_square(
                     self.row + self.face_direction * 2, self.column

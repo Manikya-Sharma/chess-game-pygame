@@ -10,19 +10,19 @@ class Images:
 
     def init_images(self):
         # TODO: change the main directory to ./chess
-        self.d["black"]["king"] = pygame.image.load("./chess/images/black/king.png")
-        self.d["black"]["queen"] = pygame.image.load("./chess/images/black/queen.png")
-        self.d["black"]["bishop"] = pygame.image.load("./chess/images/black/bishop.png")
-        self.d["black"]["rook"] = pygame.image.load("./chess/images/black/rook.png")
-        self.d["black"]["pawn"] = pygame.image.load("./chess/images/black/pawn.png")
-        self.d["black"]["knight"] = pygame.image.load("./chess/images/black/knight.png")
+        self.d["black"]["king"] = pygame.image.load("./images/black/king.png")
+        self.d["black"]["queen"] = pygame.image.load("./images/black/queen.png")
+        self.d["black"]["bishop"] = pygame.image.load("./images/black/bishop.png")
+        self.d["black"]["rook"] = pygame.image.load("./images/black/rook.png")
+        self.d["black"]["pawn"] = pygame.image.load("./images/black/pawn.png")
+        self.d["black"]["knight"] = pygame.image.load("./images/black/knight.png")
 
-        self.d["white"]["king"] = pygame.image.load("./chess/images/white/king.png")
-        self.d["white"]["queen"] = pygame.image.load("./chess/images/white/queen.png")
-        self.d["white"]["bishop"] = pygame.image.load("./chess/images/white/bishop.png")
-        self.d["white"]["rook"] = pygame.image.load("./chess/images/white/rook.png")
-        self.d["white"]["pawn"] = pygame.image.load("./chess/images/white/pawn.png")
-        self.d["white"]["knight"] = pygame.image.load("./chess/images/white/knight.png")
+        self.d["white"]["king"] = pygame.image.load("./images/white/king.png")
+        self.d["white"]["queen"] = pygame.image.load("./images/white/queen.png")
+        self.d["white"]["bishop"] = pygame.image.load("./images/white/bishop.png")
+        self.d["white"]["rook"] = pygame.image.load("./images/white/rook.png")
+        self.d["white"]["pawn"] = pygame.image.load("./images/white/pawn.png")
+        self.d["white"]["knight"] = pygame.image.load("./images/white/knight.png")
 
     def get_images(self):
         return self.d
